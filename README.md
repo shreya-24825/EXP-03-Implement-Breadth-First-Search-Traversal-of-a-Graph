@@ -75,37 +75,35 @@ Now, Queue becomes empty, So, terminate these process of iteration.
 ## Program: 
 ```
 from collections import deque
-from collections import defaultdict
 
-def bfs(graph,start,visited,path):
-    queue = deque()
-    path.append(start)
-    queue.append(start)
-    visited[start] = True
-    while len(queue) != 0:
-        tmpnode = queue.popleft()
-        for neighbour in graph[tmpnode]:
-            if visited[neighbour] == False:
-                path.append(neighbour)
-                queue.append(neighbour)
-                visited[neighbour] = True
-    return path
-
-graph = defaultdict(list)
-v,e = map(int,input().split())
+def bfs(graph,start):
+    visited=set()
+    queue=deque([start])
+    result=[]
+    while queue:
+        node = queue.popleft()
+        if node not in visited:
+            visited.add(node)
+            result.append(node)
+            for neighbor in reversed(graph[node]):
+                if neighbor not in visited:
+                    queue.append(neighbor)
+    return result
+    
+n,e= map(int, input().split())
+graph={}
 for i in range(e):
-    u,v = map(str,input().split())
+    u,v=input().split()
+    if u not in graph:
+        graph[u]=[]
+    if v not in graph:
+        graph[v]=[]
     graph[u].append(v)
-    graph[v].append(u)
 
-if '0' in graph:
-    start = '0'
-else:
-    start = 'A'
-path = []
-visited = defaultdict(bool)
-traversedpath = bfs(graph,start,visited,path)
-print(traversedpath)
+start_node=list(graph.keys())[0]
+output=bfs(graph,start_node)
+print(output)
+    
 ```
 Sample Input : 
 ```
